@@ -29,6 +29,6 @@ app.listen(PORT, () => {
   console.log(`Server has been started and running at ${PORT}`);
 });
 
-app.get('/home', (req, res) => {
+app.get('/', (req, res) => {
   res.send('<h1> Welcome to Swiggy Clone Application </h1>');
 });
