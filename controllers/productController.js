@@ -4,35 +4,19 @@ const multer = require('multer');
 const path = require('path');
 
 const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    // Define the directory to store uploaded files
-    cb(null, 'uploads/');
+  destination: function (req, file, cb) {
+    const dir = 'uploads/';
+    if (!fs.existsSync(dir)) {
+      fs.mkdirSync(dir, { recursive: true });
+    }
+    cb(null, dir);
   },
-  filename: (req, file, cb) => {
-    // Set the file name (including extension)
+  filename: function (req, file, cb) {
     cb(null, Date.now() + path.extname(file.originalname));
   },
 });
 
-// const upload = multer({ storage: storage });
-
-const upload = multer({
-  storage: storage,
-  fileFilter: (req, file, cb) => {
-    // Accept only image files (JPG, PNG, GIF, JPEG)
-    const filetypes = /jpeg|jpg|png|gif/;
-    const extname = filetypes.test(
-      path.extname(file.originalname).toLowerCase()
-    );
-    const mimetype = filetypes.test(file.mimetype);
-
-    if (extname && mimetype) {
-      return cb(null, true);
-    } else {
-      cb(new Error('Only image files are allowed.'));
-    }
-  },
-}).single('image');
+const upload = multer({ storage: storage });
 
 const addProduct = async (req, res) => {
   try {
@@ -106,4 +90,8 @@ const deleteProductById = async (req, res) => {
   }
 };
 
-module.exports = { addProduct, upload, getProductByFirm, deleteProductById };
+module.exports = {
+  addProduct: [upload.single('image'), addProduct],
+  getProductByFirm,
+  deleteProductById,
+};

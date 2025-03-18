@@ -34,11 +34,11 @@ const firmSchema = new mongoose.Schema({
   },
   vendor: [
     {
-      type: mongoose.Types.ObjectId,
+      type: mongoose.Schema.Types.ObjectId,
       ref: 'Vendor',
     },
   ],
-  product: [
+  products: [
     {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'Product',

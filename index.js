@@ -5,9 +5,10 @@ const bodyParser = require('body-parser');
 const vendorRouts = require('./routes/vendorRoutes');
 const firmRoutes = require('./routes/firmRoutes');
 const productRoutes = require('./routes/productRoutes');
-const path = require('path');
+const cors = require('cors');
 
 const app = express();
+app.use(cors());
 
 const PORT = process.env.PORT || 4000;
 
@@ -19,6 +20,7 @@ mongoose
   .catch((error) => console.log(error));
 
 app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use('/vendor', vendorRouts);
 app.use('/firm', firmRoutes);

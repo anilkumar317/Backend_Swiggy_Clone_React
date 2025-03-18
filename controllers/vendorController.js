@@ -22,7 +22,6 @@ const vendorRegister = async (req, res) => {
     await newVendor.save();
 
     res.status(200).json({ message: 'Vendor register successful' });
-    console.log(newVendor);
   } catch (error) {
     console.error(error);
     res.status(500).json({ Error: 'Internal server error' });
@@ -34,10 +33,8 @@ const vendorLogin = async (req, res) => {
 
   try {
     const vendor = await Vendor.findOne({ email });
-    const comparedPassword = await bcrypt.compare(password, vendor.password);
-
-    if (!vendor || !comparedPassword) {
-      return res.status(401).json({ Error: 'Invalid username or password' });
+    if (!vendor || !(await bcrypt.compare(password, vendor.password))) {
+      return res.status(401).json({ error: 'Invalid username or password' });
     }
 
     const token = jwt.sign({ vendorId: vendor._id }, secretKey, {
@@ -45,6 +42,7 @@ const vendorLogin = async (req, res) => {
     });
 
     res.status(201).json({ success: 'Login Successfully', token });
+
     console.log(email, 'This is token:', token);
   } catch (error) {
     console.error(error);
