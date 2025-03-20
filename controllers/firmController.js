@@ -20,7 +20,6 @@ const storage = multer.diskStorage({
 const upload = multer({ storage: storage });
 
 const addFirm = async (req, res) => {
-  console.log(req.file);
   try {
     const { firmName, area, category, region, offer } = req.body;
 
@@ -46,16 +45,14 @@ const addFirm = async (req, res) => {
     });
 
     const savedFirm = await firm.save();
-
     const firmId = savedFirm._id;
-    const vendorFirmName = savedFirm.firmName;
 
     vendor.firm.push(savedFirm);
     await vendor.save();
 
     return res
       .status(200)
-      .json({ message: 'Firm Added successfully', firmId, vendorFirmName });
+      .json({ message: 'Product Added successfully', firmId });
   } catch (error) {
     console.error(error);
     res.status(500).json('intenal server error');
