@@ -31,6 +31,8 @@ const vendorRegister = async (req, res) => {
 const vendorLogin = async (req, res) => {
   const { email, password } = req.body;
 
+  console.log(req.body);
+
   try {
     const vendor = await Vendor.findOne({ email });
     if (!vendor || !(await bcrypt.compare(password, vendor.password))) {
@@ -41,9 +43,11 @@ const vendorLogin = async (req, res) => {
       expiresIn: '1h',
     });
 
-    res.status(201).json({ success: 'Login Successfully', token });
+    const vendorId = vendor._id;
 
-    console.log(email, 'This is token:', token);
+    res.status(201).json({ success: 'Login Successfully', token, vendorId });
+
+    console.log(email);
   } catch (error) {
     console.error(error);
     res.status(400).json({ Error: 'Internal server error' });
@@ -61,14 +65,16 @@ const getAllVendors = async (req, res) => {
 };
 
 const getVendorById = async (req, res) => {
-  const vendorId = req.params.id;
+  const vendorId = req.params.vendorId;
 
   try {
-    const vendor = await Vendor.findById(vendorId);
+    const vendor = await Vendor.findById(vendorId).populate('firm');
 
     if (!vendor) {
       return res.status(400).json({ message: 'vendor not fot found' });
     }
+
+    // const vendorFirmId = vendor.firm[0]._id;
 
     res.status(200).json({ vendor });
   } catch (error) {

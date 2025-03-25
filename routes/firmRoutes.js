@@ -1,7 +1,7 @@
 const express = require('express');
 const firmController = require('../controllers/firmController');
 const verifyToken = require('../middlewares/verifyToken');
-const { path } = require('path');
+const path = require('path');
 
 const router = express.Router();
 

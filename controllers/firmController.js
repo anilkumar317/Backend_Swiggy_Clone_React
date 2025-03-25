@@ -50,9 +50,7 @@ const addFirm = async (req, res) => {
     vendor.firm.push(savedFirm);
     await vendor.save();
 
-    return res
-      .status(200)
-      .json({ message: 'Product Added successfully', firmId });
+    return res.status(200).json({ message: 'Firm Added successfully', firmId });
   } catch (error) {
     console.error(error);
     res.status(500).json('intenal server error');
