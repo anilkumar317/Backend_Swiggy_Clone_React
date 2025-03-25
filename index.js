@@ -8,14 +8,7 @@ const productRoutes = require('./routes/productRoutes');
 const cors = require('cors');
 
 const app = express();
-app.use(
-  cors({
-    origin: [
-      'https://react-swiggy-clone-backend-dashboard.vercel.app',
-      'http://localhost:4000', // For local testing
-    ],
-  })
-);
+app.use(cors());
 
 const PORT = process.env.PORT || 4000;
 
