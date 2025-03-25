@@ -8,13 +8,14 @@ const productRoutes = require('./routes/productRoutes');
 const cors = require('cors');
 
 const app = express();
-app.use(cors());
-app.use((req, res, next) => {
-  res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
-  next();
-});
+app.use(
+  cors({
+    origin: [
+      'https://react-swiggy-clone-backend-dashboard.vercel.app',
+      'http://localhost:4000', // For local testing
+    ],
+  })
+);
 
 const PORT = process.env.PORT || 4000;
 
